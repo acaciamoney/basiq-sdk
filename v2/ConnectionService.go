@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/basiqio/basiq-sdk-golang/errors"
+	"github.com/acaciamoney/basiq-sdk/errors"
 )
 
 type ConnectionService struct {

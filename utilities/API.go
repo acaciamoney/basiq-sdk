@@ -2,10 +2,11 @@ package utilities
 
 import (
 	"bytes"
-	"github.com/basiqio/basiq-sdk-golang/errors"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/acaciamoney/basiq-sdk/errors"
 )
 
 type API struct {
