@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/acaciamoney/basiq-sdk/errors"
-	"github.com/acaciamoney/basiq-sdk/utilities"
+	"github.com/basiqio/basiq-sdk-golang/errors"
+	"github.com/basiqio/basiq-sdk-golang/utilities"
 )
 
 type AccountsList struct {

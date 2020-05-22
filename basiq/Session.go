@@ -3,10 +3,10 @@ package basiq
 import (
 	"time"
 
-	"github.com/acaciamoney/basiq-sdk/errors"
-	"github.com/acaciamoney/basiq-sdk/utilities"
-	v1 "github.com/acaciamoney/basiq-sdk/v1"
-	v2 "github.com/acaciamoney/basiq-sdk/v2"
+	"github.com/basiqio/basiq-sdk-golang/errors"
+	"github.com/basiqio/basiq-sdk-golang/utilities"
+	"github.com/basiqio/basiq-sdk-golang/v1"
+	"github.com/basiqio/basiq-sdk-golang/v2"
 )
 
 func NewSessionV1(apiKey string) (*v1.Session, *errors.APIError) {

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/acaciamoney/basiq-sdk/errors"
+	"github.com/basiqio/basiq-sdk-golang/errors"
 )
 
 type Statement struct {

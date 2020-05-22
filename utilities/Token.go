@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/acaciamoney/basiq-sdk/errors"
+	"github.com/basiqio/basiq-sdk-golang/errors"
 )
 
 type Token struct {

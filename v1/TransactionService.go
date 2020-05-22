@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/acaciamoney/basiq-sdk/errors"
-	"github.com/acaciamoney/basiq-sdk/utilities"
+	"github.com/basiqio/basiq-sdk-golang/errors"
+	"github.com/basiqio/basiq-sdk-golang/utilities"
 )
 
 type TransactionsList struct {
@@ -49,7 +49,6 @@ func (ts *TransactionService) GetTransactions(userId string, filter *utilities.F
 	if filter != nil {
 		url = url + "?" + filter.GetFilter()
 	}
-
 	body, _, err := ts.Session.Api.Send("GET", url, nil)
 	if err != nil {
 		return data, err

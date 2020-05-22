@@ -4,7 +4,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/acaciamoney/basiq-sdk/errors"
+	"github.com/basiqio/basiq-sdk-golang/errors"
 )
 
 type JobStep struct {

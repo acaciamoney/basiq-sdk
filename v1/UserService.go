@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/acaciamoney/basiq-sdk/errors"
-	"github.com/acaciamoney/basiq-sdk/utilities"
+	"github.com/basiqio/basiq-sdk-golang/errors"
+	"github.com/basiqio/basiq-sdk-golang/utilities"
 )
 
 type UserService struct {
@@ -96,13 +96,19 @@ func (us *UserService) DeleteUser(userId string) *errors.APIError {
 	return nil
 }
 
-func (us *UserService) RefreshAllConnections(userId string) *errors.APIError {
-	_, _, err := us.Session.Api.Send("POST", "users/"+userId+"/connections/refresh", nil)
+func (us *UserService) RefreshAllConnections(userId string) (RefreshConnectionsResponse, *errors.APIError) {
+	body, _, err := us.Session.Api.Send("POST", "users/"+userId+"/connections/refresh", nil)
+	var response RefreshConnectionsResponse
 	if err != nil {
-		return err
+		return response, err
 	}
 
-	return nil
+	if err := json.Unmarshal(body, &response); err != nil {
+		fmt.Println(string(body))
+		return response, &errors.APIError{Message: err.Error()}
+	}
+
+	return response, nil
 }
 
 func (us *UserService) ListAllConnections(userId string, filter *utilities.FilterBuilder) (ConnectionList, *errors.APIError) {
@@ -204,6 +210,12 @@ type User struct {
 	Service     *UserService
 }
 
+type RefreshConnectionsResponse struct {
+	Data []struct {
+		ID string `json:"id"`
+	} `json:"data"`
+}
+
 func (u *User) CreateConnection(connectionData *ConnectionData) (Job, *errors.APIError) {
 	return NewConnectionService(&u.Service.Session, u).NewConnection(connectionData)
 }
@@ -223,7 +235,7 @@ func (u *User) Delete() *errors.APIError {
 	return u.Service.DeleteUser(u.Id)
 }
 
-func (u *User) RefreshAllConnections() *errors.APIError {
+func (u *User) RefreshAllConnections() (RefreshConnectionsResponse, *errors.APIError) {
 	return u.Service.RefreshAllConnections(u.Id)
 }
 

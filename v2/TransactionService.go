@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/acaciamoney/basiq-sdk/errors"
-	"github.com/acaciamoney/basiq-sdk/utilities"
+	"github.com/basiqio/basiq-sdk-golang/errors"
+	"github.com/basiqio/basiq-sdk-golang/utilities"
 )
 
 type Transaction struct {
