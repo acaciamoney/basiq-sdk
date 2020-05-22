@@ -3,7 +3,7 @@ package basiq
 import (
 	"time"
 
-	"github.com/basiqio/basiq-sdk-golang/errors"
+	"github.com/acaciamoney/basiq-sdk/errors"
 	"github.com/basiqio/basiq-sdk-golang/utilities"
 	"github.com/basiqio/basiq-sdk-golang/v1"
 	"github.com/basiqio/basiq-sdk-golang/v2"

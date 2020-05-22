@@ -1,3 +1,3 @@
-module github.com/basiqio/basiq-sdk-golang
+module github.com/acaciamoney/basiq-sdk
 
 go 1.13

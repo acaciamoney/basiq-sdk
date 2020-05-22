@@ -27,27 +27,27 @@ You can grab your API key on the [dashboard](http://dashboard.basiq.io).
 Now that you have your API key, you can use the following command to install the SDK:
 
 ```bash
-go get -u github.com/basiqio/basiq-sdk-golang/
+go get -u github.com/acaciamoney/basiq-sdk/
 ```
 
 In order to instantiate Session object, following package should be imported:
 ```go
 import (
-        "github.com/basiqio/basiq-sdk-golang/basiq"
+        "github.com/acaciamoney/basiq-sdk/basiq"
 )
 ```
 
 Services for API version 1.0 are located in v1 package:
 ```go
 import (
-        "github.com/basiqio/basiq-sdk-golang/v1"
+        "github.com/acaciamoney/basiq-sdk/v1"
 )
 ```
 
 Services for API version 2.0 are located in v2 package:
 ```go
 import (
-        "github.com/basiqio/basiq-sdk-golang/v2"
+        "github.com/acaciamoney/basiq-sdk/v2"
 )
 ```
 
@@ -61,7 +61,7 @@ You can fetch a list of supported financial institutions. The function returns a
 package main
 
 import (
-        "github.com/basiqio/basiq-sdk-golang/basiq"
+        "github.com/acaciamoney/basiq-sdk/basiq"
         "log"
 )
 
@@ -84,7 +84,7 @@ Fetching institutions v2.0:
 package main
 
 import (
-        "github.com/basiqio/basiq-sdk-golang/basiq"
+        "github.com/acaciamoney/basiq-sdk/basiq"
         "log"
 )
 
@@ -109,7 +109,7 @@ When a new connection request is made, the server will create a job that will li
 package main
 
 import (
-        "github.com/basiqio/basiq-sdk-golang/basiq"
+        "github.com/acaciamoney/basiq-sdk/basiq"
         "log"
 )
 
@@ -149,7 +149,7 @@ through transactions list by calling Next().
 package main
 
 import (
-        "github.com/basiqio/basiq-sdk-golang/basiq"
+        "github.com/acaciamoney/basiq-sdk/basiq"
         "log"
 )
 
