@@ -21,7 +21,8 @@ func NewAPI(host string) *API {
 }
 
 func (api *API) Send(method string, path string, data []byte) ([]byte, int, *errors.APIError) {
-	log.Println("Requesting: " + api.host + path)
+	log.Println("Requesting: " + method + "_" + api.host + path)
+
 	var req *http.Request
 	var err error
 

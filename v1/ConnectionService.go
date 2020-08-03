@@ -49,7 +49,6 @@ func (cs *ConnectionService) GetConnection(connectionId string) (Connection, *er
 	var data Connection
 
 	data.Service = cs
-
 	body, _, err := cs.Session.Api.Send("GET", "users/"+cs.user.Id+"/connections/"+connectionId, nil)
 	if err != nil {
 		return data, err
@@ -59,7 +58,6 @@ func (cs *ConnectionService) GetConnection(connectionId string) (Connection, *er
 		fmt.Println(string(body))
 		return data, &errors.APIError{Message: err.Error()}
 	}
-
 	return data, nil
 }
 

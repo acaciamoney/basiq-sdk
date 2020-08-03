@@ -3,6 +3,7 @@ package v1
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
 	"github.com/acaciamoney/basiq-sdk/utilities"
@@ -140,7 +141,7 @@ func (us *UserService) GetAccounts(userId string, filter *utilities.FilterBuilde
 	if filter != nil {
 		url = url + "?" + filter.GetFilter()
 	}
-
+	log.Print(url)
 	body, _, err := us.Session.Api.Send("GET", url, nil)
 	if err != nil {
 		return data, err
