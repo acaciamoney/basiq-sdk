@@ -18,6 +18,7 @@ type TransactionsList struct {
 
 type Transaction struct {
 	Id              string                 `json:"id"`
+	Type            string                 `json:"type"`
 	Status          string                 `json:"status"`
 	Description     string                 `json:"description"`
 	PostDate        string                 `json:"postDate"`
