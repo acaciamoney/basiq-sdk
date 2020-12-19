@@ -32,14 +32,16 @@ type AuthorizationResponse struct {
 func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 
 	token := GetCachedToken()
+	log.Print(token)
 	if token.Expiry > int(time.Now().Unix()) {
+
 		return &Token{
 			Value:     token.Token,
 			Validity:  time.Duration(token.Expiry) * time.Second,
 			Refreshed: time.Now(),
 		}, nil
 	}
-
+	log.Print("TOKEN HAS EXPIRED!!")
 	body, _, err := NewAPI("https://au-api.basiq.io/").SetHeader("Authorization", "Basic "+apiKey).
 		SetHeader("basiq-version", apiVersion).
 		SetHeader("content-type", "application/json").
@@ -57,7 +59,7 @@ func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 
 	SetCachedToken(CachedToken{
 		Token:  data.AccessToken,
-		Expiry: int(expiry.Seconds()),
+		Expiry: int(time.Now().Unix()) + int(expiry.Seconds()),
 	})
 
 	return &Token{
