@@ -3,6 +3,7 @@ package v1
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
 )
@@ -100,6 +101,7 @@ func (cs *ConnectionService) RefreshConnection(connectionId string) (Job, *error
 	if err != nil {
 		return data, err
 	}
+	log.Print(body)
 
 	if err := json.Unmarshal(body, &data); err != nil {
 		fmt.Println(string(body))
