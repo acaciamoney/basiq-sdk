@@ -57,7 +57,7 @@ func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 
 	SetCachedToken(CachedToken{
 		Token:  data.AccessToken,
-		Expiry: int(time.Now().Unix()) + int(expiry.Seconds()),
+		Expiry: int(time.Now().Unix()) + int(expiry.Seconds()-10),
 	})
 
 	return &Token{
