@@ -31,7 +31,7 @@ type AuthorizationResponse struct {
 func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 
 	token := GetCachedToken(apiVersion)
-	if token.Expiry > int(time.Now().Unix()) {
+	if token.Expiry != 0 && token.Expiry > int(time.Now().Unix()) {
 		return &Token{
 			Value:     token.Token,
 			Validity:  time.Duration(token.Expiry) * time.Second,
@@ -81,7 +81,7 @@ func GetCachedToken(apiVersion string) CachedToken {
 	err = json.Unmarshal([]byte(*payload.SecretString), &token)
 	if err != nil {
 		log.Print("Unable to parse cached basiq token")
-		log.Fatal(err)
+		return CachedToken{}
 	}
 	return token
 }
