@@ -2,7 +2,6 @@ package utilities
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"time"
 
@@ -31,9 +30,8 @@ type AuthorizationResponse struct {
 
 func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 
-	token := GetCachedToken()
+	token := GetCachedToken(apiVersion)
 	if token.Expiry > int(time.Now().Unix()) {
-
 		return &Token{
 			Value:     token.Token,
 			Validity:  time.Duration(token.Expiry) * time.Second,
@@ -50,7 +48,6 @@ func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 
 	var data AuthorizationResponse
 	if err := json.Unmarshal(body, &data); err != nil {
-		fmt.Println(string(body))
 		return nil, &errors.APIError{Message: err.Error()}
 	}
 	expiry := time.Duration(data.ExpiresIn) * time.Second
@@ -58,7 +55,7 @@ func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 	SetCachedToken(CachedToken{
 		Token:  data.AccessToken,
 		Expiry: int(time.Now().Unix()) + int(expiry.Seconds()-10),
-	})
+	}, apiVersion)
 
 	return &Token{
 		Value:     data.AccessToken,
@@ -67,13 +64,13 @@ func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 	}, nil
 }
 
-func GetCachedToken() CachedToken {
+func GetCachedToken(apiVersion string) CachedToken {
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	}))
 	payload, err := secretsmanager.New(sess).GetSecretValue(
 		&secretsmanager.GetSecretValueInput{
-			SecretId: aws.String("BasiqToken"),
+			SecretId: aws.String("BasiqToken-" + apiVersion),
 		},
 	)
 	if err != nil {
@@ -89,7 +86,7 @@ func GetCachedToken() CachedToken {
 	return token
 }
 
-func SetCachedToken(t CachedToken) {
+func SetCachedToken(t CachedToken, apiVersion string) {
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	}))
@@ -100,7 +97,7 @@ func SetCachedToken(t CachedToken) {
 	}
 	_, err = secretsmanager.New(sess).PutSecretValue(
 		&secretsmanager.PutSecretValueInput{
-			SecretId:     aws.String("BasiqToken"),
+			SecretId:     aws.String("BasiqToken-" + apiVersion),
 			SecretString: aws.String(string(str)),
 		},
 	)
