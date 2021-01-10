@@ -3,6 +3,7 @@ package utilities
 import (
 	"encoding/json"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
@@ -10,6 +11,27 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/secretsmanager"
 )
+
+var secretErrors = []string{
+	"RequestTimeout",
+	"RequestTimeoutException",
+	"PriorRequestNotComplete",
+	"ConnectionError",
+	"HTTPClientError",
+	"Service-side throttling and limit errors and exceptions",
+	"Throttling",
+	"ThrottlingException",
+	"ThrottledException",
+	"RequestThrottledException",
+	"TooManyRequestsException",
+	"ProvisionedThroughputExceededException",
+	"TransactionInProgressException",
+	"RequestLimitExceeded",
+	"BandwidthLimitExceeded",
+	"LimitExceededException",
+	"RequestThrottled",
+	"SlowDown",
+}
 
 type CachedToken struct {
 	Token  string
@@ -75,6 +97,13 @@ func GetCachedToken(apiVersion string) CachedToken {
 	)
 	if err != nil {
 		log.Print("Unable to fetch cached basiq token")
+		for _, v := range secretErrors {
+			if strings.Contains(err.Error(), v) {
+				log.Print("Found transient error - retry in 2 seconds")
+				time.Sleep(2 * time.Second)
+				return GetCachedToken(apiVersion)
+			}
+		}
 		log.Fatal(err)
 	}
 	var token CachedToken
@@ -103,6 +132,14 @@ func SetCachedToken(t CachedToken, apiVersion string) {
 	)
 	if err != nil {
 		log.Print("Unable Save cached basiq token...")
+		for _, v := range secretErrors {
+			if strings.Contains(err.Error(), v) {
+				log.Print("Found transient error - retry in 2 seconds")
+				time.Sleep(2 * time.Second)
+				SetCachedToken(t, apiVersion)
+				return
+			}
+		}
 		log.Fatal(err)
 	}
 }
