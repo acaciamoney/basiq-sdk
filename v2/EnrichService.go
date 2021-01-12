@@ -77,7 +77,7 @@ func NewEnrichService(session *Session) *EnrichService {
 	}
 }
 
-func (ts *TransactionService) GetEnrichedTransaction(transaction Transaction) (Enrich, *errors.APIError) {
+func (ts *EnrichService) GetEnrichedTransaction(transaction Transaction) (Enrich, *errors.APIError) {
 	var data Enrich
 
 	body, _, err := ts.Session.Api.Send("GET", "enrich?q="+transaction.Description+"&country=AU&institution="+transaction.Institution, nil)
