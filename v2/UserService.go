@@ -6,6 +6,7 @@ import (
 
 	"github.com/acaciamoney/basiq-sdk/errors"
 	"github.com/acaciamoney/basiq-sdk/utilities"
+	v2 "github.com/acaciamoney/basiq-sdk/v2"
 )
 
 type AccountsList struct {
@@ -207,6 +208,10 @@ func (us *UserService) GetTransaction(userId string, transactionId string) (Tran
 	return NewTransactionService(&us.Session).GetTransaction(userId, transactionId)
 }
 
+func (us *UserService) GetEnrichedTransaction(transaction v2.Transaction) (Enrich, *errors.APIError) {
+	return NewEnrichService(&us.Session).GetEnrichedTransaction(transaction)
+}
+
 func (us *UserService) ForUser(userId string) User {
 	return User{
 		Id:      userId,
@@ -268,4 +273,8 @@ func (u *User) GetTransaction(transactionId string) (Transaction, *errors.APIErr
 
 func (u *User) GetTransactions(filter *utilities.FilterBuilder) (TransactionsList, *errors.APIError) {
 	return u.Service.GetTransactions(u.Id, filter)
+}
+
+func (u *User) GetEnrichedTransaction(transaction v2.Transaction) (Enrich, *errors.APIError) {
+	return u.Service.GetEnrichedTransaction(transaction)
 }
