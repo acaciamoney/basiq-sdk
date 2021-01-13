@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type Merchant struct {
@@ -81,6 +82,7 @@ func (ts *EnrichService) GetEnrichedTransaction(transaction Transaction) (Enrich
 	var data Enrich
 
 	body, _, err := ts.Session.Api.Send("GET", "enrich?q="+transaction.Description+"&country=AU&institution="+transaction.Institution, nil)
+	spew.Dump(body)
 	if err != nil {
 		return data, err
 	}
