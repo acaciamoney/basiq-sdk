@@ -82,9 +82,10 @@ func (es *EnrichService) GetEnrichedTransaction(transaction Transaction) (Enrich
 	var data Enrich
 
 	es.Session.Api.SetHeader("Content-Type", "application/json")
-	body, _, err := es.Session.Api.Send("GET", "enrich?q="+transaction.Description+"&country=AU&institution="+transaction.Institution, nil)
-	spew.Dump(body)
+	body, int, err := es.Session.Api.Send("GET", "enrich?q="+transaction.Description+"&country=AU&institution="+transaction.Institution, nil)
+	spew.Dump(body, int)
 	if err != nil {
+		spew.Dump(err)
 		return data, err
 	}
 
