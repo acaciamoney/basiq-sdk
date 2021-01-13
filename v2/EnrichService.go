@@ -2,7 +2,6 @@ package v2
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/url"
 
@@ -90,7 +89,6 @@ func (es *EnrichService) GetEnrichedTransaction(transaction Transaction) (Enrich
 	}
 	if err := json.Unmarshal(body, &data); err != nil {
 		log.Print("[ERROR] - Failed to parse response from enrich service")
-		fmt.Println(string(body))
 		return data, &errors.APIError{Message: err.Error()}
 	}
 	return data, nil
