@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type API struct {
@@ -48,6 +49,7 @@ func (api *API) Send(method string, path string, data []byte) ([]byte, int, *err
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
+	spew.Dump(body, err)
 	if err != nil {
 		return nil, 0, &errors.APIError{Message: err.Error()}
 	}
