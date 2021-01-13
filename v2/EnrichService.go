@@ -78,10 +78,11 @@ func NewEnrichService(session *Session) *EnrichService {
 	}
 }
 
-func (ts *EnrichService) GetEnrichedTransaction(transaction Transaction) (Enrich, *errors.APIError) {
+func (es *EnrichService) GetEnrichedTransaction(transaction Transaction) (Enrich, *errors.APIError) {
 	var data Enrich
 
-	body, _, err := ts.Session.Api.Send("GET", "enrich?q="+transaction.Description+"&country=AU&institution="+transaction.Institution, nil)
+	es.Session.Api.SetHeader("Content-Type", "application/json")
+	body, _, err := es.Session.Api.Send("GET", "enrich?q="+transaction.Description+"&country=AU&institution="+transaction.Institution, nil)
 	spew.Dump(body)
 	if err != nil {
 		return data, err
