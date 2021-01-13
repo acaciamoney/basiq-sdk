@@ -3,9 +3,10 @@ package v2
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"net/url"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type Merchant struct {
@@ -80,19 +81,17 @@ func NewEnrichService(session *Session) *EnrichService {
 
 func (es *EnrichService) GetEnrichedTransaction(transaction Transaction) (Enrich, *errors.APIError) {
 	var data Enrich
-
 	es.Session.Api.SetHeader("Content-Type", "application/json")
-	body, int, err := es.Session.Api.Send("GET", "enrich?q="+transaction.Description+"&country=AU&institution="+transaction.Institution, nil)
-	spew.Dump(body, int)
+	queryDescription := url.QueryEscape(transaction.Description)
+	body, _, err := es.Session.Api.Send("GET", "enrich?q="+queryDescription+"&country=AU&institution="+transaction.Institution, nil)
 	if err != nil {
-		spew.Dump(err)
+		log.Print("[ERROR] - Failed to make request to enrich service")
 		return data, err
 	}
-
 	if err := json.Unmarshal(body, &data); err != nil {
+		log.Print("[ERROR] - Failed to parse response from enrich service")
 		fmt.Println(string(body))
 		return data, &errors.APIError{Message: err.Error()}
 	}
-
 	return data, nil
 }
