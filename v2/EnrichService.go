@@ -63,8 +63,8 @@ type Enrich struct {
 	} `json:"data"`
 	Links struct {
 		Self       string `json:"self"`
-		LogoMaster string `json:"logo-master"`
-		LogoThumb  string `json:"logo-thumb"`
+		LogoMaster string `json:"logoMaster"`
+		LogoThumb  string `json:"logoThumb"`
 	} `json:"links"`
 }
 
