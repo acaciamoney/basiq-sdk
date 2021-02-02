@@ -63,8 +63,8 @@ type Enrich struct {
 	} `json:"data"`
 	Links struct {
 		Self       string `json:"self"`
-		LogoMaster string `json:"logoMaster"`
-		LogoThumb  string `json:"logoThumb"`
+		LogoMaster string `json:"logo-master"`
+		LogoThumb  string `json:"logo-thumb"`
 	} `json:"links"`
 }
 
@@ -84,7 +84,7 @@ func (es *EnrichService) GetEnrichedTransaction(transaction Transaction) (Enrich
 	queryDescription := url.QueryEscape(transaction.Description)
 	body, _, err := es.Session.Api.Send("GET", "enrich?q="+queryDescription+"&country=AU&institution="+transaction.Institution, nil)
 	if err != nil {
-		log.Print("[ERROR] - Failed to make request to enrich service")
+		log.Print("[ERROR] - Failed to make request to enrich service: " + err.Message)
 		return data, err
 	}
 	if err := json.Unmarshal(body, &data); err != nil {
