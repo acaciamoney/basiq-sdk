@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
+	"github.com/sethgrid/pester"
 )
 
 type API struct {
@@ -32,7 +33,11 @@ func (api *API) Send(method string, path string, data []byte) ([]byte, int, *err
 		req, err = http.NewRequest(method, api.host+path, nil)
 	}
 
-	c := http.Client{}
+	c := pester.New()
+	c.MaxRetries = 5
+	c.Backoff = pester.ExponentialBackoff
+	c.KeepLog = true
+
 	if err != nil {
 		return nil, 0, &errors.APIError{Message: err.Error()}
 	}
