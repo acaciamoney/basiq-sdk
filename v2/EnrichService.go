@@ -84,7 +84,7 @@ func (es *EnrichService) GetEnrichedTransaction(transaction Transaction) (Enrich
 	queryDescription := url.QueryEscape(transaction.Description)
 	body, _, err := es.Session.Api.Send("GET", "enrich?q="+queryDescription+"&country=AU&institution="+transaction.Institution, nil)
 	if err != nil {
-		log.Print("[ERROR] - Failed to make request to enrich service: " + err.Message)
+		log.Print("[ERROR] - Failed to make request to enrich service: " + err.Message + "(" + transaction.Id + "|" + transaction.Description + ")")
 		return data, err
 	}
 	if err := json.Unmarshal(body, &data); err != nil {

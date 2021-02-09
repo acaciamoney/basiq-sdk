@@ -35,6 +35,7 @@ func (api *API) Send(method string, path string, data []byte) ([]byte, int, *err
 	}
 
 	c := pester.New()
+	c.Concurrency = 1
 	c.MaxRetries = 20
 	c.Backoff = pester.ExponentialJitterBackoff
 	c.KeepLog = true
@@ -48,9 +49,9 @@ func (api *API) Send(method string, path string, data []byte) ([]byte, int, *err
 	}
 
 	resp, err := c.Do(req)
-	fmt.Println(c.LogString())
 
 	if err != nil {
+		fmt.Println(c.LogString())
 		return nil, 0, &errors.APIError{Message: err.Error()}
 	}
 
