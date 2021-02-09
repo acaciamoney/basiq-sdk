@@ -34,8 +34,8 @@ func (api *API) Send(method string, path string, data []byte) ([]byte, int, *err
 	}
 
 	c := pester.New()
-	c.MaxRetries = 5
-	c.Backoff = pester.ExponentialBackoff
+	c.MaxRetries = 20
+	c.Backoff = pester.ExponentialJitterBackoff
 	c.KeepLog = true
 
 	if err != nil {
