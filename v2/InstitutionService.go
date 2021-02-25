@@ -8,15 +8,17 @@ import (
 )
 
 type Institution struct {
-	Id              string `json:"id"`
-	Name            string `json:"name"`
-	ShortName       string `json:"shortName"`
-	Country         string `json:"country"`
-	ServiceName     string `json:"serviceName"`
-	ServiceType     string `json:"serviceType"`
-	LoginIdCaption  string `json:"loginIdCaption"`
-	PasswordCaption string `json:"PasswordCaption"`
-	Logo            struct {
+	Id                      string `json:"id"`
+	Name                    string `json:"name"`
+	ShortName               string `json:"shortName"`
+	Country                 string `json:"country"`
+	ServiceName             string `json:"serviceName"`
+	ServiceType             string `json:"serviceType"`
+	LoginIdCaption          string `json:"loginIdCaption"`
+	PasswordCaption         string `json:"PasswordCaption"`
+	SecurityCodeCaption     string `json:"securityCodeCaption"`
+	SecondaryLoginIdCaption string `json:"secondaryLoginIdCaption"`
+	Logo                    struct {
 		Type   string `json:"type"`
 		Colors string `json:"colors"`
 		Links  struct {
