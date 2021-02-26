@@ -26,10 +26,11 @@ type InstitutionData struct {
 }
 
 type ConnectionData struct {
-	Institution  *InstitutionData `json:"institution"`
-	LoginId      string           `json:"loginId"`
-	Password     string           `json:"password"`
-	SecurityCode string           `json:"securityCode,omitempty"`
+	Institution      *InstitutionData `json:"institution"`
+	LoginId          string           `json:"loginId"`
+	Password         string           `json:"password"`
+	SecurityCode     string           `json:"securityCode,omitempty"`
+	SecondaryLoginId string           `json:secondaryLoginId,omitempty`
 }
 
 type ConnectionFilter struct {
