@@ -30,7 +30,7 @@ type ConnectionData struct {
 	LoginId          string           `json:"loginId"`
 	Password         string           `json:"password"`
 	SecurityCode     string           `json:"securityCode,omitempty"`
-	SecondaryLoginId string           `json:secondaryLoginId,omitempty`
+	SecondaryLoginId string           `json:"secondaryLoginId,omitempty"`
 }
 
 type ConnectionFilter struct {
