@@ -3,6 +3,7 @@ package v2
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
 )
@@ -57,7 +58,7 @@ func (cs *ConnectionService) GetConnection(connectionId string) (Connection, *er
 	}
 
 	if err := json.Unmarshal(body, &data); err != nil {
-		fmt.Println(string(body))
+		log.Print(string(body))
 		return data, &errors.APIError{Message: err.Error()}
 	}
 
@@ -87,7 +88,7 @@ func (cs *ConnectionService) NewConnection(connectionData *ConnectionData) (Job,
 	}
 
 	if err := json.Unmarshal(body, &data); err != nil {
-		fmt.Println(string(body))
+		log.Print(string(body))
 		return data, &errors.APIError{Message: err.Error()}
 	}
 

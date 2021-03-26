@@ -2,7 +2,6 @@ package utilities
 
 import (
 	"bytes"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -51,22 +50,24 @@ func (api *API) Send(method string, path string, data []byte) ([]byte, int, *err
 	resp, err := c.Do(req)
 
 	if err != nil {
-		fmt.Println(c.LogString())
+		log.Print("[ERROR] - Unable to send request to basiq API")
 		return nil, 0, &errors.APIError{Message: err.Error()}
 	}
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Print("[ERROR] - Unable to parse response from basiq API")
 		return nil, 0, &errors.APIError{Message: err.Error()}
 	}
 
 	if resp.StatusCode > 299 {
 		response, err := errors.ParseError(body)
 		if err != nil {
+			log.Print("[ERROR] - Unable to parse error from basiq API")
 			return nil, 0, &errors.APIError{Message: err.Error()}
 		}
-
+		log.Print("[ERROR] - Bad response code from basiq API")
 		return nil, 0, &errors.APIError{
 			Response:   response,
 			Message:    response.GetMessages(),
