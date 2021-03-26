@@ -84,6 +84,7 @@ func (cs *ConnectionService) NewConnection(connectionData *ConnectionData) (Job,
 	cs.Session.Api.SetHeader("Content-Type", "application/json")
 	body, _, err := cs.Session.Api.Send("POST", "users/"+cs.user.Id+"/connections", jsonBody)
 	if err != nil {
+		log.Print("[ERROR] - Basiq failed to create connection")
 		return data, err
 	}
 
