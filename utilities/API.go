@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
+	"github.com/sethgrid/pester"
 )
 
 type API struct {
@@ -32,7 +33,12 @@ func (api *API) Send(method string, path string, data []byte) ([]byte, int, *err
 		req, err = http.NewRequest(method, api.host+path, nil)
 	}
 
-	c := http.Client{}
+	c := pester.New()
+	c.Concurrency = 1
+	c.MaxRetries = 20
+	c.Backoff = pester.ExponentialJitterBackoff
+	c.KeepLog = true
+
 	if err != nil {
 		return nil, 0, &errors.APIError{Message: err.Error()}
 	}
@@ -42,22 +48,26 @@ func (api *API) Send(method string, path string, data []byte) ([]byte, int, *err
 	}
 
 	resp, err := c.Do(req)
+
 	if err != nil {
+		log.Print("[ERROR] - Unable to send request to basiq API")
 		return nil, 0, &errors.APIError{Message: err.Error()}
 	}
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Print("[ERROR] - Unable to parse response from basiq API")
 		return nil, 0, &errors.APIError{Message: err.Error()}
 	}
 
 	if resp.StatusCode > 299 {
 		response, err := errors.ParseError(body)
 		if err != nil {
+			log.Print("[ERROR] - Unable to parse error from basiq API")
 			return nil, 0, &errors.APIError{Message: err.Error()}
 		}
-
+		log.Print("[ERROR] - Bad response code from basiq API")
 		return nil, 0, &errors.APIError{
 			Response:   response,
 			Message:    response.GetMessages(),

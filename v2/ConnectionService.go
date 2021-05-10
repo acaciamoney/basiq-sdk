@@ -3,6 +3,7 @@ package v2
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
 )
@@ -26,10 +27,11 @@ type InstitutionData struct {
 }
 
 type ConnectionData struct {
-	Institution  *InstitutionData `json:"institution"`
-	LoginId      string           `json:"loginId"`
-	Password     string           `json:"password"`
-	SecurityCode string           `json:"securityCode,omitempty"`
+	Institution      *InstitutionData `json:"institution"`
+	LoginId          string           `json:"loginId"`
+	Password         string           `json:"password"`
+	SecurityCode     string           `json:"securityCode,omitempty"`
+	SecondaryLoginId string           `json:"secondaryLoginId,omitempty"`
 }
 
 type ConnectionFilter struct {
@@ -56,7 +58,7 @@ func (cs *ConnectionService) GetConnection(connectionId string) (Connection, *er
 	}
 
 	if err := json.Unmarshal(body, &data); err != nil {
-		fmt.Println(string(body))
+		log.Print(string(body))
 		return data, &errors.APIError{Message: err.Error()}
 	}
 
@@ -82,11 +84,12 @@ func (cs *ConnectionService) NewConnection(connectionData *ConnectionData) (Job,
 	cs.Session.Api.SetHeader("Content-Type", "application/json")
 	body, _, err := cs.Session.Api.Send("POST", "users/"+cs.user.Id+"/connections", jsonBody)
 	if err != nil {
+		log.Print("[ERROR] - Basiq failed to create connection")
 		return data, err
 	}
 
 	if err := json.Unmarshal(body, &data); err != nil {
-		fmt.Println(string(body))
+		log.Print(string(body))
 		return data, &errors.APIError{Message: err.Error()}
 	}
 

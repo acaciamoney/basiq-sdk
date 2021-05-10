@@ -1,6 +1,9 @@
 package v2
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/acaciamoney/basiq-sdk/errors"
 	"github.com/acaciamoney/basiq-sdk/utilities"
 )
@@ -36,4 +39,20 @@ func (s *Session) GetInstitutions() (InstitutionsList, *errors.APIError) {
 
 func (s *Session) GetInstitution(id string) (Institution, *errors.APIError) {
 	return NewInstitutionService(s).GetInstitution(id)
+}
+
+func (s *Session) GetJob(id string) (Job, *errors.APIError) {
+	var data Job
+
+	body, _, err := s.Api.Send("GET", "jobs/"+id, nil)
+	if err != nil {
+		return data, err
+	}
+
+	if err := json.Unmarshal(body, &data); err != nil {
+		fmt.Println(string(body))
+		return data, &errors.APIError{Message: err.Error()}
+	}
+
+	return data, nil
 }
