@@ -16,6 +16,8 @@ type Institution struct {
 	ServiceType     string `json:"serviceType"`
 	LoginIdCaption  string `json:"loginIdCaption"`
 	PasswordCaption string `json:"PasswordCaption"`
+	Status          string `json:"status"`
+	Stage           string `json:"stage"`
 	Logo            struct {
 		Type   string `json:"type"`
 		Colors string `json:"colors"`
