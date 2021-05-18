@@ -17,4 +17,5 @@ type Account struct {
 	Status         string                 `json:"status"`
 	Institution    string                 `json:"institution"`
 	Connection     string                 `json:"connection"`
+	Meta           map[string]interface{} `json:"meta"`
 }
