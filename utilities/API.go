@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sync"
 
 	"github.com/acaciamoney/basiq-sdk/errors"
 	"github.com/sethgrid/pester"
@@ -13,11 +14,13 @@ import (
 type API struct {
 	host    string
 	headers map[string]string
+	mutex   sync.Mutex
 }
 
 func NewAPI(host string) *API {
 	return &API{
-		host: host,
+		host:  host,
+		mutex: sync.Mutex{},
 	}
 }
 
@@ -43,9 +46,11 @@ func (api *API) Send(method string, path string, data []byte) ([]byte, int, *err
 		return nil, 0, &errors.APIError{Message: err.Error()}
 	}
 
+	api.mutex.Lock()
 	for k, v := range api.headers {
 		req.Header.Add(k, v)
 	}
+	api.mutex.Unlock()
 
 	resp, err := c.Do(req)
 

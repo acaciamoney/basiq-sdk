@@ -33,8 +33,6 @@ var secretErrors = []string{
 	"SlowDown",
 }
 
-var localCache CachedToken = CachedToken{}
-
 type CachedToken struct {
 	Token  string
 	Expiry int
@@ -53,12 +51,8 @@ type AuthorizationResponse struct {
 }
 
 func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
-	var token CachedToken
-	if localCache.Token != "" {
-		token = localCache
-	} else {
-		token = GetCachedToken(apiVersion)
-	}
+
+	token := GetCachedToken(apiVersion)
 	if token.Expiry != 0 && token.Expiry > int(time.Now().Unix()) {
 		return &Token{
 			Value:     token.Token,
@@ -80,14 +74,10 @@ func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 	}
 	expiry := time.Duration(data.ExpiresIn) * time.Second
 
-	if localCache.Token != "" {
-		cachedToken := CachedToken{
-			Token:  data.AccessToken,
-			Expiry: int(time.Now().Unix()) + int(expiry.Seconds()-10),
-		}
-		localCache = cachedToken
-		SetCachedToken(cachedToken, apiVersion)
-	}
+	SetCachedToken(CachedToken{
+		Token:  data.AccessToken,
+		Expiry: int(time.Now().Unix()) + int(expiry.Seconds()-10),
+	}, apiVersion)
 
 	return &Token{
 		Value:     data.AccessToken,
