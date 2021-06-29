@@ -33,6 +33,8 @@ var secretErrors = []string{
 	"SlowDown",
 }
 
+var localCache CachedToken = CachedToken{}
+
 type CachedToken struct {
 	Token  string
 	Expiry int
@@ -87,6 +89,11 @@ func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 }
 
 func GetCachedToken(apiVersion string) CachedToken {
+
+	if localCache.Token != "" {
+		return localCache
+	}
+
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	}))
@@ -112,6 +119,7 @@ func GetCachedToken(apiVersion string) CachedToken {
 		log.Print("Unable to parse cached basiq token")
 		return CachedToken{}
 	}
+	localCache = token
 	return token
 }
 
