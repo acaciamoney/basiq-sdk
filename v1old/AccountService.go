@@ -1,4 +1,4 @@
-package v1
+package v1old
 
 type AccountsList struct {
 	Count int       `json:"count"`
