@@ -53,8 +53,12 @@ type AuthorizationResponse struct {
 }
 
 func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
-
-	token := GetCachedToken(apiVersion)
+	var token CachedToken
+	if localCache.Token != "" {
+		token = localCache
+	} else {
+		token = GetCachedToken(apiVersion)
+	}
 	if token.Expiry != 0 && token.Expiry > int(time.Now().Unix()) {
 		return &Token{
 			Value:     token.Token,
@@ -76,10 +80,14 @@ func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 	}
 	expiry := time.Duration(data.ExpiresIn) * time.Second
 
-	SetCachedToken(CachedToken{
-		Token:  data.AccessToken,
-		Expiry: int(time.Now().Unix()) + int(expiry.Seconds()-10),
-	}, apiVersion)
+	if localCache.Token != "" {
+		cachedToken := CachedToken{
+			Token:  data.AccessToken,
+			Expiry: int(time.Now().Unix()) + int(expiry.Seconds()-10),
+		}
+		localCache = cachedToken
+		SetCachedToken(cachedToken, apiVersion)
+	}
 
 	return &Token{
 		Value:     data.AccessToken,
@@ -89,11 +97,6 @@ func GetToken(apiKey, apiVersion string) (*Token, *errors.APIError) {
 }
 
 func GetCachedToken(apiVersion string) CachedToken {
-
-	if localCache.Token != "" {
-		return localCache
-	}
-
 	sess := session.Must(session.NewSessionWithOptions(session.Options{
 		SharedConfigState: session.SharedConfigEnable,
 	}))
@@ -119,7 +122,6 @@ func GetCachedToken(apiVersion string) CachedToken {
 		log.Print("Unable to parse cached basiq token")
 		return CachedToken{}
 	}
-	localCache = token
 	return token
 }
 
