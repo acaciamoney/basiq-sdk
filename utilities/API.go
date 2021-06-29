@@ -24,6 +24,14 @@ func NewAPI(host string) *API {
 	}
 }
 
+func (api *API) Lock() {
+	api.mutex.Lock()
+}
+
+func (api *API) Unlock() {
+	api.mutex.Unlock()
+}
+
 func (api *API) Send(method string, path string, data []byte) ([]byte, int, *errors.APIError) {
 	log.Println("Requesting: " + method + "_" + api.host + path)
 
