@@ -80,7 +80,9 @@ func NewEnrichService(session *Session) *EnrichService {
 
 func (es *EnrichService) GetEnrichedTransaction(transaction Transaction) (Enrich, *errors.APIError) {
 	var data Enrich
+	es.Session.Api.Lock()
 	es.Session.Api.SetHeader("Content-Type", "application/json")
+	es.Session.Api.Unlock()
 	queryDescription := url.QueryEscape(transaction.Description)
 	body, _, err := es.Session.Api.Send("GET", "enrich?q="+queryDescription+"&country=AU&institution="+transaction.Institution, nil)
 	if err != nil {

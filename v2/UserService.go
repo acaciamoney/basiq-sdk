@@ -161,6 +161,24 @@ func (us *UserService) ListAllConnections(userId string, filter *utilities.Filte
 	return data, nil
 }
 
+func (us *UserService) ListAllUsers() (UserList, *errors.APIError) {
+	var data UserList
+
+	url := "users"
+
+	body, _, err := us.Session.Api.Send("GET", url, nil)
+	if err != nil {
+		return data, err
+	}
+
+	if err := json.Unmarshal(body, &data); err != nil {
+		fmt.Println(string(body))
+		return data, &errors.APIError{Message: err.Error()}
+	}
+
+	return data, nil
+}
+
 func (us *UserService) GetAccounts(userId string, filter *utilities.FilterBuilder) (AccountsList, *errors.APIError) {
 	var data AccountsList
 
@@ -223,10 +241,15 @@ type ConnectionList struct {
 	Data  []Connection `json:"data"`
 }
 
+type UserList struct {
+	Data []User `json:"data"`
+}
+
 type User struct {
 	Id          string         `json:"id"`
 	Email       string         `json:"email"`
 	Mobile      string         `json:"mobile"`
+	CreatedTime string         `json:"createdTime"`
 	Connections ConnectionList `json:"connections"`
 	Service     *UserService
 }
