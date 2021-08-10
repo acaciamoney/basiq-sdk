@@ -63,8 +63,8 @@ type Enrich struct {
 	} `dynamodbav:"data"`
 	Links struct {
 		Self       string `dynamodbav:"self"`
-		LogoMaster string `dynamodbav:"logo-master"`
-		LogoThumb  string `dynamodbav:"logo-thumb"`
+		LogoMaster string `json:"logo-master" dynamodbav:"logo-master"`
+		LogoThumb  string `json:"logo-thumb" dynamodbav:"logo-thumb"`
 	} `dynamodbav:"links"`
 }
 
