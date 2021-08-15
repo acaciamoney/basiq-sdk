@@ -9,63 +9,63 @@ import (
 )
 
 type Merchant struct {
-	BusinessName string `json:"businessName"`
-	Website      string `json:"website"`
+	BusinessName string `dynamodbav:"businessName"`
+	Website      string `dynamodbav:"website"`
 	PhoneNumber  struct {
-		Local         string `json:"local"`
-		International string `json:"international"`
-	} `json:"phoneNumber"`
+		Local         string `dynamodbav:"local"`
+		International string `dynamodbav:"international"`
+	} `dynamodbav:"phoneNumber"`
 }
 
 type Location struct {
-	RouteNo          string `json:"routeNo"`
-	Route            string `json:"route"`
-	PostalCode       string `json:"postalCode"`
-	Suburb           string `json:"suburb"`
-	State            string `json:"state"`
-	Country          string `json:"country"`
-	FormattedAddress string `json:"formattedAddress"`
+	RouteNo          string `dynamodbav:"routeNo"`
+	Route            string `dynamodbav:"route"`
+	PostalCode       string `dynamodbav:"postalCode"`
+	Suburb           string `dynamodbav:"suburb"`
+	State            string `dynamodbav:"state"`
+	Country          string `dynamodbav:"country"`
+	FormattedAddress string `dynamodbav:"formattedAddress"`
 	Geometry         struct {
-		Lat string `json:"lat"`
-		Lng string `json:"lng"`
-	} `json:"geometry"`
+		Lat string `dynamodbav:"lat"`
+		Lng string `dynamodbav:"lng"`
+	} `dynamodbav:"geometry"`
 }
 
 type Category struct {
 	ANZSIC struct {
 		Division struct {
-			Code  string `json:"code"`
-			Title string `json:"title"`
-		} `json:"division"`
+			Code  string `dynamodbav:"code"`
+			Title string `dynamodbav:"title"`
+		} `dynamodbav:"division"`
 		Subdivision struct {
-			Code  string `json:"code"`
-			Title string `json:"title"`
-		} `json:"subdivision"`
+			Code  string `dynamodbav:"code"`
+			Title string `dynamodbav:"title"`
+		} `dynamodbav:"subdivision"`
 		Group struct {
-			Code  string `json:"code"`
-			Title string `json:"title"`
-		} `json:"group"`
+			Code  string `dynamodbav:"code"`
+			Title string `dynamodbav:"title"`
+		} `dynamodbav:"group"`
 		Class struct {
-			Code  string `json:"code"`
-			Title string `json:"title"`
-		} `json:"class"`
-	} `json:"anzsic"`
+			Code  string `dynamodbav:"code"`
+			Title string `dynamodbav:"title"`
+		} `dynamodbav:"class"`
+	} `dynamodbav:"anzsic"`
 }
 
 type Enrich struct {
-	Type      string `json:"type"`
-	Class     string `json:"class"`
-	Direction string `json:"direction"`
+	Type      string `dynamodbav:"type"`
+	Class     string `dynamodbav:"class"`
+	Direction string `dynamodbav:"direction"`
 	Data      struct {
-		Merchant Merchant `json:"merchant"`
-		Location Location `json:"location"`
-		Category Category `json:"category"`
-	} `json:"data"`
+		Merchant Merchant `dynamodbav:"merchant"`
+		Location Location `dynamodbav:"location"`
+		Category Category `dynamodbav:"category"`
+	} `dynamodbav:"data"`
 	Links struct {
-		Self       string `json:"self"`
-		LogoMaster string `json:"logo-master"`
-		LogoThumb  string `json:"logo-thumb"`
-	} `json:"links"`
+		Self       string `dynamodbav:"self"`
+		LogoMaster string `json:"logo-master" dynamodbav:"logoMaster"`
+		LogoThumb  string `json:"logo-thumb" dynamodbav:"logoThumb"`
+	} `dynamodbav:"links"`
 }
 
 type EnrichService struct {
