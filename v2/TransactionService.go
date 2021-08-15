@@ -28,7 +28,7 @@ type Transaction struct {
 	} `json:"subClass"`
 	Direction string `json:"direction"`
 	Enrich    struct {
-		Merchant Merchant `json:"merhcant"`
+		Merchant Merchant `json:"merchant"`
 		Location Location `json:"location"`
 		Category Category `json:"category"`
 	} `json:"enrich"`
